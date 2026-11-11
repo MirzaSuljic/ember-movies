@@ -6,10 +6,10 @@ const PATHS = {
   search: 'M9 15a6 6 0 1 0 0-12 6 6 0 0 0 0 12zM13.5 13.5L17 17',
 };
 
-const path = (name) => PATHS[name];
+const pathFor = (name) => PATHS[name];
 
 <template>
   <svg class="rr-icon" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-    <path d={{path @name}} />
+    <path d={{pathFor @name}} />
   </svg>
 </template>
