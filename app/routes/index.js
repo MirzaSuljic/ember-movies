@@ -1,7 +1,11 @@
 import Route from '@ember/routing/route';
+import { service } from '@ember/service';
 
-export default class Index extends Route{
+// "/" opens the genres (or the login, if not logged in)
+export default class IndexRoute extends Route {
+  @service router;
+
   beforeModel() {
-    this.transitionTo('genres');
+    this.router.transitionTo('genres');
   }
 }

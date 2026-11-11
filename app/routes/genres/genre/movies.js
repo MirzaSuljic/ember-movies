@@ -1,20 +1,12 @@
 import Route from '@ember/routing/route';
-import { capitalize as capitalizeWords } from '.../helpers/capitalize';
-import { action } from '@ember/object';
+import { service } from '@ember/service';
 
-export default class Movies extends Route{
+export default class GenreMoviesRoute extends Route {
+  @service catalog;
 
-  resetController(controller) {
-    controller.setProperties({
-      isAddingMovie: false,
-      newMovieTitle: ''
-    });
+  async model() {
+    const genre = this.modelFor('genres.genre');
+    await this.catalog.loadMovies(genre.id);
+    return genre;
   }
-
-  @action
-    didTransition() {
-      let genre = this.modelFor('genres.genre');
-      let name = capitalizeWords(genre.name);
-      document.title = `${name} movies - Movie List`;
-    }
 }

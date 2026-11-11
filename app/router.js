@@ -1,20 +1,18 @@
-import EmberRouter from '@ember/routing/router';
-import config from './config/environment';
+import EmberRouter from '@embroider/router';
+import config from 'ember-movies/config/environment';
 
 export default class Router extends EmberRouter {
   location = config.locationType;
   rootURL = config.rootURL;
 }
-Router.map(function() {
-  // this.route('authenticated', { path: '' }, function() {
-    this.route('genres', function() {
-      this.route('genre', { path: ':id' }, function() {
-        this.route('movies');
-        this.route('details');
-      });
-    });
-  // });
-  this.route('login');
-    // all routes that require the session to be authenticated
-});
 
+Router.map(function () {
+  this.route('login');
+  // everything under /genres needs a login (see routes/genres.js)
+  this.route('genres', function () {
+    this.route('genre', { path: ':id' }, function () {
+      this.route('details');
+      this.route('movies');
+    });
+  });
+});

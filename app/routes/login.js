@@ -1,9 +1,11 @@
 import Route from '@ember/routing/route';
-import UnauthenticatedRouteMixin from 'ember-simple-auth/mixins/unauthenticated-route-mixin';
+import { service } from '@ember/service';
 
+// a logged in user who opens /login goes to the genres
+export default class LoginRoute extends Route {
+  @service session;
 
-export default Route.extend(UnauthenticatedRouteMixin, {
-  resetController(controller) {
-    controller.setProperties({ email: "test@test.com", password: "test123" });
+  beforeModel() {
+    this.session.prohibitAuthentication('genres');
   }
-});
+}

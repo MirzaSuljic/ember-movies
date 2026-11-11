@@ -1,57 +1,55 @@
-# movie-ember
+# Movie List (ember-movies)
 
-This README outlines the details of collaborating on this Ember application.
-A short introduction of this app could easily go here.
+A small **Ember.js 7** app: log in, browse movie **genres**, read and edit a genre's description, and see its **movies** with search, sorting and **star ratings**. You can add genres and movies.
+There is no backend – **Mirage** answers the API calls in the browser, so the app also works as a static site.
 
-## Prerequisites
+Rewritten from the older Ember 3.15 project `MovieEmber`.
 
-You will need the following things properly installed on your computer.
+**Demo login:** `test@test.com` / `test123` (already filled in on the login page)
 
-* [Git](https://git-scm.com/)
-* [Node.js](https://nodejs.org/) (with npm)
-* [Ember CLI](https://ember-cli.com/)
-* [Google Chrome](https://google.com/chrome/)
+## Tech
 
-## Installation
+| Part | Technology |
+|---|---|
+| Framework | Ember.js 7.3 (Octane, `.gjs` template-tag components, Vite + Embroider) |
+| Login | Ember Simple Auth 8 (OAuth2 password grant, protected routes) |
+| Fake API | Mirage JS (`app/mirage/server.js`) with demo genres and movies |
+| Tests | QUnit + Testem |
 
-* `git clone <repository-url>` this repository
-* `cd movie-ember`
-* `npm install`
+## Run
 
-## Running / Development
+Requires Node.js 20.19 or newer.
 
-* `ember serve`
-* Visit your app at [http://localhost:4200](http://localhost:4200).
-* Visit your tests at [http://localhost:4200/tests](http://localhost:4200/tests).
+```bash
+npm install
+npm start          # http://localhost:4200
+```
 
-### Code Generators
+On Windows, turn on **Developer Mode** (Settings → System → For developers) – Embroider creates symlinks.
 
-Make use of the many generators for code, try `ember help generate` for more details
+## How it works
 
-### Running Tests
+| URL | What you see |
+|---|---|
+| `/login` | login form (`LoginForm`) |
+| `/genres` | genre list (`GenreSidebar`) – login required |
+| `/genres/:id` | opens Details if the genre has a description, otherwise Movies |
+| `/genres/:id/details` | description with Edit / Save (`GenreDetails`, asks before leaving unsaved changes) |
+| `/genres/:id/movies?sort=titleAsc&s=star` | movies with search and sorting in the URL (`MovieList`, `StarRating`) |
 
-* `ember test`
-* `ember test --server`
+- `app/router.js` – the URLs
+- `app/routes/` – load data and protect routes (`session.requireAuthentication`)
+- `app/controllers/genres/genre/movies.js` – `sort` and `s` query params
+- `app/services/catalog.js` – genres and movies from `/api/...`, kept in tracked state
+- `app/templates/**/*.gjs` – route templates, loading and error screens
+- `app/components/` – `AppHeader`, `GenreSidebar`, `GenreDetails`, `MovieList`, `StarRating`, `LoginForm`, `Icon`
+- `app/authenticators/oauth2.js`, `app/services/session.js`, `app/session-stores/application.js` – Ember Simple Auth
+- `app/initializers/mirage.js` + `app/mirage/server.js` – the fake API
 
-### Linting
+## Build, lint, test
 
-* `npm run lint:hbs`
-* `npm run lint:js`
-* `npm run lint:js -- --fix`
-
-### Building
-
-* `ember build` (development)
-* `ember build --environment production` (production)
-
-### Deploying
-
-Specify what it takes to deploy your app.
-
-## Further Reading / Useful Links
-
-* [ember.js](https://emberjs.com/)
-* [ember-cli](https://ember-cli.com/)
-* Development Browser Extensions
-  * [ember inspector for chrome](https://chrome.google.com/webstore/detail/ember-inspector/bmdblncegkenkacieihfhpjfppoconhi)
-  * [ember inspector for firefox](https://addons.mozilla.org/en-US/firefox/addon/ember-inspector/)
+```bash
+npm run build      # production build in dist/
+npm run lint
+npm test
+```

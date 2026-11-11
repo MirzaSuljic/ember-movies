@@ -1,11 +1,12 @@
 import Route from '@ember/routing/route';
+import { service } from '@ember/service';
 
-export default class Index extends Route{
-  redirect(genre) {
-    if (genre.description) {
-      this.transitionTo('genres.genre.details');
-    } else {
-      this.transitionTo('genres.genre.movies');
-    }
+// /genres/1 opens Details when the genre has a description, otherwise Movies
+export default class GenreIndexRoute extends Route {
+  @service router;
+
+  beforeModel() {
+    const genre = this.modelFor('genres.genre');
+    this.router.transitionTo(genre.description ? 'genres.genre.details' : 'genres.genre.movies');
   }
 }

@@ -1,5 +1,6 @@
-import OAuth2PasswordGrantAuthenticator from 'ember-simple-auth/authenticators/oauth2-password-grant';
+import OAuth2PasswordGrant from 'ember-simple-auth/authenticators/oauth2-password-grant';
 
-export default OAuth2PasswordGrantAuthenticator.extend({
-  // serverTokenEndpoint: '/credentials/genres'
-});
+// 'authenticator:oauth2': sends username + password to POST /token (answered by Mirage)
+export default class OAuth2Authenticator extends OAuth2PasswordGrant {
+  serverTokenEndpoint = '/token';
+}

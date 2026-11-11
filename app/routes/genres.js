@@ -1,15 +1,16 @@
 import Route from '@ember/routing/route';
-import AuthenticatedRouteMixin from 'ember-simple-auth/mixins/authenticated-route-mixin';
-import { inject as service } from '@ember/service';
+import { service } from '@ember/service';
 
-export default Route.extend(AuthenticatedRouteMixin, {
-  session: service(),
-   model() {
-    return this.store.findAll('genre');
-  },
-  actions: {
-    didTransition() {
-      document.title = 'Genres - Movie List';
-    }
+export default class GenresRoute extends Route {
+  @service session;
+  @service catalog;
+
+  beforeModel(transition) {
+    // not logged in -> /login
+    this.session.requireAuthentication(transition, 'login');
   }
-});
+
+  model() {
+    return this.catalog.loadGenres();
+  }
+}

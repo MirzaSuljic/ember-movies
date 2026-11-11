@@ -1,31 +1,23 @@
 'use strict';
 
-module.exports = function(environment) {
-  let ENV = {
-    modulePrefix: 'movie-ember',
+module.exports = function (environment) {
+  const ENV = {
+    modulePrefix: 'ember-movies',
     environment,
     rootURL: '/',
-    'ember-simple-auth': {
-      routeIfAlreadyAuthenticated: 'genres',
-      // apiNamespace: 'api',
-      // apiUrl: null
-    },
-    
-    locationType: 'auto',
+    locationType: 'history',
     EmberENV: {
+      EXTEND_PROTOTYPES: false,
       FEATURES: {
         // Here you can enable experimental features on an ember canary build
-        // e.g. EMBER_MODULE_UNIFICATION: true
+        // e.g. EMBER_NATIVE_DECORATOR_SUPPORT: true
       },
-      EXTEND_PROTOTYPES: {
-        // Prevent Ember Data from overriding Date.parse.
-        Date: false
-      }
     },
+
     APP: {
       // Here you can pass flags/options to your application instance
       // when it is created
-    }
+    },
   };
 
   if (environment === 'development') {
@@ -46,7 +38,6 @@ module.exports = function(environment) {
 
     ENV.APP.rootElement = '#ember-testing';
     ENV.APP.autoboot = false;
-    
   }
 
   if (environment === 'production') {
